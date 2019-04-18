@@ -1,28 +1,37 @@
-// TODO: Create action creators as defined in tests
-export const addQuote = quote => {
-	return {
-		type: 'ADD_QUOTE',
-		quote
-	};
-};
+export default (state = [], action) => {
+  	let index;
+  	let quote;
 
-export const removeQuote = quoteId => {
-	return {
-		type: 'REMOVE_QUOTE',
-		quoteId
-	};
-};
+	switch(action.type) {
 
-export const upvoteQuote = quoteId => {
-	return {
-		type: 'UPVOTE_QUOTE',
-		quoteId
-	}
-}
+	case "ADD_QUOTE":
+	return [...state, action.quote];
 
-export const downvoteQuote = quoteId => {
-	return {
-		type: 'DOWNVOTE_QUOTE',
-		quoteId
-	}
+	case "REMOVE_QUOTE":
+	return state.filter(quote => quote.id !== action.quoteId);
+
+	case "UPVOTE_QUOTE":
+	index = state.findIndex(quote => quote.id === action.quoteId);
+    quote = state[index];
+
+    return [
+      ...state.slice(0, index),
+      Object.assign({}, quote, { votes: quote.votes += 1 }),
+      ...state.slice(index + 1)
+    ];
+
+    case 'DOWNVOTE_QUOTE':
+      index = state.findIndex(quote => quote.id === action.quoteId);
+      quote = state[index];
+      if (quote.votes > 0) {
+        return [
+          ...state.slice(0, index),
+          Object.assign({}, quote, { votes: quote.votes -= 1 }),
+          ...state.slice(index + 1)
+        ];
+      }
+
+    default:
+    return state;
+  }
 }
