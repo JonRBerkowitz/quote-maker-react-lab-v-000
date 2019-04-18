@@ -6,7 +6,7 @@ export default (state = [], action) => {
 
 	case "ADD_QUOTE":
 	return [...state, action.quote];
-	
+
 	case "REMOVE_QUOTE":
 	return state.filter(quote => quote.id !== action.quoteId);
 
@@ -31,7 +31,7 @@ export default (state = [], action) => {
         ];
       }
 
-    default: 
+    default:
     return state;
   }
 }
